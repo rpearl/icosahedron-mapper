@@ -1,0 +1,10 @@
+{
+  "name": "chl-scripts",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "pixelpusher-driver": "https://github.com/chlorophyll/pixelpusher-driver",
+    "readline-sync": "^1.4.10"
+  }
+}
