@@ -2,8 +2,6 @@ const PixelPusherRegistry = require('pixelpusher-driver').default;
 const readlineSync = require('readline-sync');
 
 const registry = new PixelPusherRegistry();
-function dbgStrip(strip, buf) {
-}
 
 const fakeController = {
     setStrip(strip, buf) {
@@ -14,6 +12,10 @@ const fakeController = {
             }
         }
         console.log(`strip: ${strip}, nonzeros: ${nonzeros}`);
+        let first = 3*nonzeros[0];
+        let last = 3*nonzeros[nonzeros.length-1];
+        console.log(buf[first], buf[first+1], buf[first+2]);
+        console.log(buf[last], buf[last+1], buf[last+2]);
     },
     sync() {},
 };
@@ -58,9 +60,15 @@ function runloop() {
         const stripBufs = stripColors.map(() => new Buffer(3*pixelsPerStrip));
 
         const activeBuf = stripBufs[strip];
-        const color = stripColors[strip];
+
 
         for (let pixel = 0; pixel < pixelsPerChunk; pixel++) {
+            let color = stripColors[strip];
+            if (pixel == 0) {
+                color = [0, 0, 0xff];
+            } else if (pixel == pixelsPerChunk-1) {
+                color = [0xff, 0xff, 0xff];
+            }
             let offset = 3*(chunk * pixelsPerChunk + pixel);
             activeBuf[offset+0] = color[0];
             activeBuf[offset+1] = color[1];
